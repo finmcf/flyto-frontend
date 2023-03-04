@@ -14,7 +14,7 @@ import FlightSearch from "./Components/FlightSearch";
 
 import Row4 from "./Components/Row4";
 
-import PassengersModal from "./Components/PassengersModal";
+import PassengersModal from "./Components/PassengersModal copy";
 
 export default function App() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -25,6 +25,7 @@ export default function App() {
   const [isPassengersModalOpen, setIsPassengersModalOpen] = useState(false);
 
   const [adults, setAdults] = useState(1);
+  const [children, setChildren] = useState(0);
 
   return (
     <ScrollView>
@@ -54,7 +55,11 @@ export default function App() {
             oneWayOrReturnSelected={oneWayOrReturnSelected}
           />
 
-          <Row4 setIsPassengersModalOpen={setIsPassengersModalOpen} />
+          <Row4
+            setIsPassengersModalOpen={setIsPassengersModalOpen}
+            adults={adults}
+            children={children}
+          />
 
           <FlightSearch />
           <Text>{oneWayOrReturnSelected}</Text>
@@ -64,6 +69,8 @@ export default function App() {
             setIsPassengersModalOpen={setIsPassengersModalOpen}
             adults={adults}
             setAdults={setAdults}
+            children={children}
+            setChildren={setChildren}
           />
         </View>
       </View>

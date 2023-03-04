@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Modal,
   View,
@@ -158,27 +158,45 @@ const DoneButton = (props) => {
 const PassengersModal = (props) => {
   const styles = StyleSheet.create({
     modal: {
-      flex: 1,
-
       paddingHorizontal: "15%",
 
       alignItems: "center",
     },
   });
 
+  const pan = useRef(new Animated.ValueXY({ x: Math.min(0), y: 0 })).current;
+
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (evt, gestureState) => {
       // Set up the conditions for when the pan responder should be activated
-      return gestureState.dy > 10;
+      return gestureState.dy > 0;
+    },
+    onPanResponderMove: (event, gestureState) => {
+      // Check if swipe gesture is in the downward direction or has not gone beyond the initial y position
+      if (gestureState.dy > 0) {
+        pan.setValue({ x: 0, y: gestureState.dy });
+      }
     },
 
     onPanResponderRelease: (evt, gestureState) => {
       // Check if the user has swiped the modal downwards enough to close it
-      if (gestureState.dy > height * 0.1) {
-        // Close the modal
+      if (gestureState.dy > height * 0.05 && gestureState.vy > 0) {
         props.setIsPassengersModalOpen(false);
+        pan.setValue({ x: 0, y: 0 });
+      } else {
+        // Reset the position of the modal if the user did not swipe down enough to close it
+        Animated.spring(pan, {
+          toValue: { x: 0, y: 0 },
+          useNativeDriver: false,
+        }).start();
       }
     },
+  });
+
+  const opacity = pan.y.interpolate({
+    inputRange: [0, height * 0.5],
+    outputRange: [1, 0],
+    extrapolate: "clamp",
   });
 
   return (
@@ -190,7 +208,13 @@ const PassengersModal = (props) => {
           props.setIsPassengersModalOpen(false);
         }}
       >
-        <View style={styles.modal}>
+        <Animated.View
+          style={[
+            styles.modal,
+            { transform: [{ translateY: pan.y }] },
+            { opacity },
+          ]}
+        >
           <CloseButton
             setIsPassengersModalOpen={props.setIsPassengersModalOpen}
           />
@@ -219,7 +243,7 @@ const PassengersModal = (props) => {
           <DoneButton
             setIsPassengersModalOpen={props.setIsPassengersModalOpen}
           />
-        </View>
+        </Animated.View>
       </Modal>
     </View>
   );

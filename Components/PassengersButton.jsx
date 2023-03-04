@@ -8,11 +8,11 @@ import {
   Dimensions,
 } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Entypo } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
 
-const Passengers = (props) => {
+const PassengersButton = (props) => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -30,7 +30,7 @@ const Passengers = (props) => {
       marginHorizontal: "7%",
       alignItems: "center",
     },
-    text: { fontSize: width * 0.05 },
+    text: { fontSize: width * 0.05, marginRight: "10%" },
   });
   return (
     <TouchableOpacity
@@ -38,16 +38,16 @@ const Passengers = (props) => {
       onPress={() => props.setIsPassengersModalOpen(true)}
     >
       <View style={styles.passengers}>
-        <Text style={styles.text}>1</Text>
+        <Text style={styles.text}>{props.adults}</Text>
         <Ionicons name="person" size={width * 0.05} />
       </View>
 
       <View style={styles.passengers}>
-        <Text style={styles.text}>1</Text>
+        <Text style={styles.text}>{props.children}</Text>
         <Ionicons name="person" size={width * 0.035} />
       </View>
     </TouchableOpacity>
   );
 };
 
-export default Passengers;
+export default PassengersButton;
