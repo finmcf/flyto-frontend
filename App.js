@@ -16,6 +16,9 @@ import Row4 from "./Components/Row4";
 
 import PassengersModal from "./Components/PassengersModal copy";
 
+import ClassModal from "./Components/ClassModal";
+import DateModal from "./Components/DateModal";
+
 export default function App() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -23,6 +26,11 @@ export default function App() {
     useState("One Way");
 
   const [isPassengersModalOpen, setIsPassengersModalOpen] = useState(false);
+
+  const [isClassModalOpen, setIsClassModalOpen] = useState(false);
+
+  const [isDepartureDateModalOpen, setIsDepartureDateModalOpen] =
+    useState(false);
 
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
@@ -53,10 +61,12 @@ export default function App() {
 
           <DateSelectorButtons
             oneWayOrReturnSelected={oneWayOrReturnSelected}
+            setIsDepartureDateModalOpen={setIsDepartureDateModalOpen}
           />
 
           <Row4
             setIsPassengersModalOpen={setIsPassengersModalOpen}
+            setIsClassModalOpen={setIsClassModalOpen}
             adults={adults}
             children={children}
           />
@@ -65,12 +75,21 @@ export default function App() {
           <Text>{oneWayOrReturnSelected}</Text>
 
           <PassengersModal
-            isPassengersModalOpen={isPassengersModalOpen}
-            setIsPassengersModalOpen={setIsPassengersModalOpen}
+            isModalOpen={isPassengersModalOpen}
+            setIsModalOpen={setIsPassengersModalOpen}
             adults={adults}
             setAdults={setAdults}
             children={children}
             setChildren={setChildren}
+          />
+
+          <ClassModal
+            isModalOpen={isClassModalOpen}
+            setIsModalOpen={setIsClassModalOpen}
+          />
+          <DateModal
+            isModalOpen={isDepartureDateModalOpen}
+            setIsModalOpen={setIsDepartureDateModalOpen}
           />
         </View>
       </View>

@@ -53,7 +53,10 @@ const DateButtons = (props) => {
   });
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => props.setIsModalOpen(true)}
+    >
       <View style={styles.oneWayContainer}>
         {props.oneWayOrReturnSelected === "Return" && (
           <Text style={styles.lightText}>{`${props.type} Date`}</Text>
@@ -76,11 +79,13 @@ const DateSelectorButtons = (props) => {
       <DateButtons
         type={"Departure"}
         oneWayOrReturnSelected={props.oneWayOrReturnSelected}
+        setIsModalOpen={props.setIsDepartureDateModalOpen}
       />
       {props.oneWayOrReturnSelected === "Return" && (
         <DateButtons
           type={"Return"}
           oneWayOrReturnSelected={props.oneWayOrReturnSelected}
+          setIsModalOpen={props.setIsDepartureDateModalOpen}
         />
       )}
     </View>

@@ -4,7 +4,7 @@ import { View } from "react-native";
 
 import PassengersButton from "./PassengersButton";
 
-import Class from "./Class";
+import ClassButton from "./ClassButton";
 
 const Row4 = (props) => {
   return (
@@ -14,7 +14,7 @@ const Row4 = (props) => {
         adults={props.adults}
         children={props.children}
       />
-      <Class />
+      <ClassButton setIsModalOpen={props.setIsClassModalOpen} />
     </View>
   );
 };

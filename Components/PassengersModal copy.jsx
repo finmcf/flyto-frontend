@@ -11,35 +11,15 @@ import {
   Animated,
 } from "react-native";
 
+import ModalContainer from "./ModalContainer";
+
+import CloseButton from "./CloseButton";
+
 import { Ionicons } from "@expo/vector-icons";
 
-const { width, height } = Dimensions.get("window");
+import DoneButton from "./DoneButton";
 
-const CloseButton = (props) => {
-  const styles = StyleSheet.create({
-    closeButton: {
-      zIndex: 1,
-      backgroundColor: "#EE2A00",
-      height: width * 0.13,
-      width: width * 0.13,
-      borderRadius: width * 0.065,
-      alignItems: "center",
-      justifyContent: "center",
-      position: "absolute",
-      top: "3%",
-      left: "8%",
-    },
-  });
-  return (
-    <TouchableOpacity
-      style={styles.closeButton}
-      activeOpacity={0.6}
-      onPress={() => props.setIsPassengersModalOpen(false)}
-    >
-      <Ionicons name="close" size={width * 0.12} color={"#FFFFFF"} />
-    </TouchableOpacity>
-  );
-};
+const { width, height } = Dimensions.get("window");
 
 const PlusButton = (props) => {
   const styles = StyleSheet.create({
@@ -136,116 +116,38 @@ const PassengerCounter = (props) => {
   );
 };
 
-const DoneButton = (props) => {
-  return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      style={{
-        width: "100%",
-        alignItems: "center",
-        backgroundColor: "#64B154",
-        borderRadius: width * 0.02,
-        paddingVertical: "4%",
-        marginTop: "45%",
-      }}
-      onPress={() => props.setIsPassengersModalOpen(false)}
-    >
-      <Text style={{ color: "white", fontSize: 20 }}>Done</Text>
-    </TouchableOpacity>
-  );
-};
-
 const PassengersModal = (props) => {
-  const styles = StyleSheet.create({
-    modal: {
-      paddingHorizontal: "15%",
-
-      alignItems: "center",
-    },
-  });
-
-  const pan = useRef(new Animated.ValueXY({ x: Math.min(0), y: 0 })).current;
-
-  const panResponder = PanResponder.create({
-    onMoveShouldSetPanResponder: (evt, gestureState) => {
-      // Set up the conditions for when the pan responder should be activated
-      return gestureState.dy > 0;
-    },
-    onPanResponderMove: (event, gestureState) => {
-      // Check if swipe gesture is in the downward direction or has not gone beyond the initial y position
-      if (gestureState.dy > 0) {
-        pan.setValue({ x: 0, y: gestureState.dy });
-      }
-    },
-
-    onPanResponderRelease: (evt, gestureState) => {
-      // Check if the user has swiped the modal downwards enough to close it
-      if (gestureState.dy > height * 0.05 && gestureState.vy > 0) {
-        props.setIsPassengersModalOpen(false);
-        pan.setValue({ x: 0, y: 0 });
-      } else {
-        // Reset the position of the modal if the user did not swipe down enough to close it
-        Animated.spring(pan, {
-          toValue: { x: 0, y: 0 },
-          useNativeDriver: false,
-        }).start();
-      }
-    },
-  });
-
-  const opacity = pan.y.interpolate({
-    inputRange: [0, height * 0.5],
-    outputRange: [1, 0],
-    extrapolate: "clamp",
-  });
-
   return (
-    <View {...panResponder.panHandlers}>
-      <Modal
-        animationType="slide"
-        visible={props.isPassengersModalOpen}
-        onRequestClose={() => {
-          props.setIsPassengersModalOpen(false);
+    <ModalContainer
+      isModalOpen={props.isModalOpen}
+      setIsModalOpen={props.setIsModalOpen}
+    >
+      <CloseButton setIsModalOpen={props.setIsModalOpen} />
+      <Text
+        style={{
+          fontFamily: "Roboto",
+          fontSize: width * 0.1,
+          marginTop: "25%",
         }}
       >
-        <Animated.View
-          style={[
-            styles.modal,
-            { transform: [{ translateY: pan.y }] },
-            { opacity },
-          ]}
-        >
-          <CloseButton
-            setIsPassengersModalOpen={props.setIsPassengersModalOpen}
-          />
-          <Text
-            style={{
-              fontFamily: "Roboto",
-              fontSize: width * 0.1,
-              marginTop: "25%",
-            }}
-          >
-            Passengers
-          </Text>
-          <PassengerCounter
-            type={"Adults"}
-            counter={props.adults}
-            incrementer={props.setAdults}
-            minimum={1}
-          />
+        Passengers
+      </Text>
+      <PassengerCounter
+        type={"Adults"}
+        counter={props.adults}
+        incrementer={props.setAdults}
+        minimum={1}
+      />
 
-          <PassengerCounter
-            type={"Children"}
-            counter={props.children}
-            incrementer={props.setChildren}
-            minimum={0}
-          />
-          <DoneButton
-            setIsPassengersModalOpen={props.setIsPassengersModalOpen}
-          />
-        </Animated.View>
-      </Modal>
-    </View>
+      <PassengerCounter
+        type={"Children"}
+        counter={props.children}
+        incrementer={props.setChildren}
+        minimum={0}
+      />
+
+      <DoneButton setIsModalOpen={props.setIsModalOpen} marginTop="20%" />
+    </ModalContainer>
   );
 };
 

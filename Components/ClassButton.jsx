@@ -4,9 +4,12 @@ import { TouchableOpacity, StyleSheet, Dimensions, Text } from "react-native";
 
 const { width } = Dimensions.get("window");
 
-const Class = () => {
+const ClassButton = (props) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => props.setIsModalOpen(true)}
+    >
       <Text style={styles.text}>ECONOMY</Text>
     </TouchableOpacity>
   );
@@ -29,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Class;
+export default ClassButton;
