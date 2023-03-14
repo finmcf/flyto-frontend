@@ -22,6 +22,10 @@ import DateModal from "./Components/DateModal";
 export default function App() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  const [departureDate, setDepartureDate] = useState(null);
+
+  const [returnDate, setReturnDate] = useState(null);
+
   const [oneWayOrReturnSelected, setOneWayOrReturnSelected] =
     useState("One Way");
 
@@ -90,6 +94,10 @@ export default function App() {
           <DateModal
             isModalOpen={isDepartureDateModalOpen}
             setIsModalOpen={setIsDepartureDateModalOpen}
+            departureDate={departureDate}
+            setDepartureDate={setDepartureDate}
+            returnDate={returnDate}
+            setReturnDate={setReturnDate}
           />
         </View>
       </View>
