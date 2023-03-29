@@ -1,9 +1,5 @@
 import React from "react";
 
-import PropTypes from "prop-types";
-
-import { ReactPropTypes } from "react";
-
 import { TouchableOpacity, Text, Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
@@ -19,6 +15,7 @@ const DoneButton = (props) => {
         borderRadius: width * 0.02,
         paddingVertical: "4%",
         marginTop: props.marginTop,
+        marginHorizontal: props.marginHorizontal,
       }}
       onPress={() => props.setIsModalOpen(false)}
     >

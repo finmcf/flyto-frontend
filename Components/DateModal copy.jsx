@@ -1,29 +1,44 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { View, StyleSheet, Dimensions, Text } from "react-native";
 
-import { Calendar } from "react-native-calendars";
+import { Calendar, CalendarList, DefaultTheme } from "react-native-calendars";
 
-const { width } = Dimensions.get("window");
+import DoneButton from "./DoneButton";
+
+const { width, height } = Dimensions.get("window");
 
 import ModalContainer from "./ModalContainer";
 
+import CloseButton from "./CloseButton";
 // Define a MyDatePicker component that renders the DatePicker component
 // and handles the selected date
 const DateModal = (props) => {
-  // Initialize a selectedDate state variable with today's date
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
   const today = new Date();
-  // Define a function to handle the selected date
+  const maxDate = new Date(
+    today.getFullYear(),
+    today.getMonth() + 12,
+    today.getDate()
+  );
+  const maxDateString = maxDate.toISOString().slice(0, 10);
+  const todayString = today.toISOString().slice(0, 10);
 
-  const CustomDayComponent = ({ date, state }) => {
-    return <Day style={styles.dayContainer} textStyle={styles.dayText} />;
+  const theme = {
+    selectedDayBackgroundColor: "green",
   };
 
-  // Define a styles object using the StyleSheet.create method
+  const markedDates = {
+    [props.departureDate]: {
+      startingDay: true,
 
-  // Render the MyDatePicker component
+      color: "#D7F8D0",
+    },
+
+    [props.returnDate]: {
+      endingDay: true,
+      color: "#D7F8D0",
+    },
+  };
+
   return (
     // Use a View component to wrap the DatePicker component
 
@@ -31,40 +46,46 @@ const DateModal = (props) => {
       isModalOpen={props.isModalOpen}
       setIsModalOpen={props.setIsModalOpen}
     >
-      <View style={styles.container}>
-        <Calendar
-          style={styles.calendar}
-          minDate={new Date()}
-          maxDate={
-            new Date(new Date().setFullYear(new Date().getFullYear() + 1))
-          }
-          theme={{
-            selectedDayBackgroundColor: "blue",
-            todayTextColor: "red",
-            arrowColor: "green",
-            textDayFontSize: width * 0.07, // Change font size of the day text
-            textMonthFontSize: 30, // Change font size of the month text
-            textDayMarginVertical: 0,
+      <View
+        style={{
+          width,
+          height: height * 0.75,
+          borderColor: "#595454",
+
+          borderBottomWidth: 1,
+        }}
+      >
+        <CalendarList
+          minDate={todayString}
+          maxDate={maxDateString}
+          // Max amount of months allowed to scroll to the past. Default = 50
+          pastScrollRange={0}
+          // Max amount of months allowed to scroll to the future. Default = 50
+          futureScrollRange={12}
+          onDayPress={(date) => {
+            if (
+              props.returnDate ||
+              props.departureButtonPressed ||
+              props.oneWayOrReturnSelected == "One Way"
+            ) {
+              props.setDepartureDate(date.dateString);
+              props.setDepartureButtonPressed(false);
+              props.setReturnDate(false);
+            } else {
+              props.setReturnDate(date.dateString);
+            }
           }}
+          markingType={"period"}
+          markedDates={markedDates}
+          theme={theme}
         />
       </View>
+      <Text>{props.departureDate}</Text>
+      <Text>{props.returnDate}</Text>
+      {props.departureButtonPressed && <Text>Yes</Text>}
+      <DoneButton setIsModalOpen={props.setIsModalOpen} marginTop="10%" />
     </ModalContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  calendar: {
-    height: "100%",
-    width: "100%",
-
-    backgroundColor: "red",
-
-    overflow: "hidden",
-  },
-});
 
 export default DateModal;

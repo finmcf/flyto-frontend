@@ -11,7 +11,7 @@ import {
 const ModalContainer = (props) => {
   const styles = StyleSheet.create({
     modal: {
-      paddingHorizontal: "15%",
+      paddingHorizontal: props.paddingHorizontal,
 
       alignItems: "center",
     },

@@ -19,12 +19,32 @@ import PassengersModal from "./Components/PassengersModal copy";
 import ClassModal from "./Components/ClassModal";
 import DateModal from "./Components/DateModal";
 
+import LocationModal from "./Components/LocationModal";
+
+import SearchResults from "./Components/SearchResults";
+
 export default function App() {
+  const formattedDate = new Date().toISOString().slice(0, 10);
+
+  const [departureLocation, setDepartureLocation] = useState("");
+
+  const [arrivalLocation, setArrivalLocation] = useState("");
+
+  const [isDepartureLocationModalOpen, setIsDepartureLocationModalOpen] =
+    useState(false);
+
+  const [isArrivalLocationModalOpen, setIsArrivalLocationModalOpen] =
+    useState(false);
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  const [departureDate, setDepartureDate] = useState(null);
+  const [departureDate, setDepartureDate] = useState(
+    new Date().toISOString().slice(0, 10)
+  );
 
   const [returnDate, setReturnDate] = useState(null);
+
+  const [departureButtonPressed, setDepartureButtonPressed] = useState(false);
 
   const [oneWayOrReturnSelected, setOneWayOrReturnSelected] =
     useState("One Way");
@@ -54,18 +74,24 @@ export default function App() {
           style={{
             flex: 1,
 
-            paddingHorizontal: "5%",
+            paddingHorizontal: "8%",
           }}
         >
           <OneWayOrReturn
             oneWayOrReturnSelected={oneWayOrReturnSelected}
             setOneWayOrReturnSelected={setOneWayOrReturnSelected}
           />
-          <LocationSelect />
+          <LocationSelect
+            setIsDepartureLocationModalOpen={setIsDepartureLocationModalOpen}
+            setIsArrivalLocationModalOpen={setIsArrivalLocationModalOpen}
+          />
 
           <DateSelectorButtons
             oneWayOrReturnSelected={oneWayOrReturnSelected}
             setIsDepartureDateModalOpen={setIsDepartureDateModalOpen}
+            setDepartureButtonPressed={setDepartureButtonPressed}
+            departureDate={departureDate}
+            returnDate={returnDate}
           />
 
           <Row4
@@ -92,13 +118,23 @@ export default function App() {
             setIsModalOpen={setIsClassModalOpen}
           />
           <DateModal
+            oneWayOrReturnSelected={oneWayOrReturnSelected}
             isModalOpen={isDepartureDateModalOpen}
             setIsModalOpen={setIsDepartureDateModalOpen}
             departureDate={departureDate}
             setDepartureDate={setDepartureDate}
             returnDate={returnDate}
             setReturnDate={setReturnDate}
+            departureButtonPressed={departureButtonPressed}
+            setDepartureButtonPressed={setDepartureButtonPressed}
           />
+
+          <LocationModal
+            isModalOpen={isDepartureLocationModalOpen}
+            setIsModalOpen={setIsDepartureLocationModalOpen}
+          />
+
+          <SearchResults />
         </View>
       </View>
     </ScrollView>

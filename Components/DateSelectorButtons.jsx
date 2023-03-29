@@ -52,10 +52,27 @@ const DateButtons = (props) => {
     },
   });
 
+  const formatDate = (inputDate) => {
+    const dateObject = new Date(inputDate);
+
+    const day = dateObject.getDate();
+    const month = dateObject.toLocaleString("default", { month: "short" });
+    const year = dateObject.getFullYear().toString().substr(-2);
+
+    const formattedDate = `${day} ${month} ${year}`;
+    return formattedDate;
+  };
+
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => props.setIsModalOpen(true)}
+      onPress={() => {
+        props.setIsModalOpen(true);
+        if (props.type === "Departure") {
+          props.setDepartureButtonPressed(true);
+        }
+      }}
+      type={props.type}
     >
       <View style={styles.oneWayContainer}>
         {props.oneWayOrReturnSelected === "Return" && (
@@ -67,7 +84,7 @@ const DateButtons = (props) => {
           </View>
         )}
 
-        <Text style={styles.boldText}>18 Mar 23</Text>
+        <Text style={styles.boldText}>{formatDate(props.date)}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -78,12 +95,15 @@ const DateSelectorButtons = (props) => {
     <View style={{ flexDirection: "row", marginTop: "4%" }}>
       <DateButtons
         type={"Departure"}
+        date={props.departureDate}
         oneWayOrReturnSelected={props.oneWayOrReturnSelected}
         setIsModalOpen={props.setIsDepartureDateModalOpen}
+        setDepartureButtonPressed={props.setDepartureButtonPressed}
       />
       {props.oneWayOrReturnSelected === "Return" && (
         <DateButtons
           type={"Return"}
+          date={props.returnDate}
           oneWayOrReturnSelected={props.oneWayOrReturnSelected}
           setIsModalOpen={props.setIsDepartureDateModalOpen}
         />

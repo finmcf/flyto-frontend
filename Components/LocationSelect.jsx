@@ -41,7 +41,13 @@ const LocationSelectButtons = (props) => {
   });
 
   return (
-    <TouchableOpacity style={styles.container} activeOpacity={0.6}>
+    <TouchableOpacity
+      style={styles.container}
+      activeOpacity={0.6}
+      onPress={() => {
+        props.onPressFunction(true);
+      }}
+    >
       <Text style={styles.textsmall}>
         {props.type === "Departure" ? "From" : "To"}
       </Text>
@@ -78,7 +84,7 @@ const SwitchButton = () => {
   );
 };
 
-const LocationSelect = () => {
+const LocationSelect = (props) => {
   return (
     <View
       style={{
@@ -89,9 +95,15 @@ const LocationSelect = () => {
       }}
     >
       <SwitchButton />
-      <LocationSelectButtons type={"Departure"} />
+      <LocationSelectButtons
+        type={"Departure"}
+        onPressFunction={props.setIsDepartureLocationModalOpen}
+      />
 
-      <LocationSelectButtons type={"Arrival"} />
+      <LocationSelectButtons
+        type={"Arrival"}
+        onPressFunction={props.setIsArrivalLocationModalOpen}
+      />
     </View>
   );
 };

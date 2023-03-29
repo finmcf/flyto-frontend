@@ -121,6 +121,7 @@ const PassengersModal = (props) => {
     <ModalContainer
       isModalOpen={props.isModalOpen}
       setIsModalOpen={props.setIsModalOpen}
+      paddingHorizontal={"15%"}
     >
       <CloseButton setIsModalOpen={props.setIsModalOpen} />
       <Text
@@ -146,7 +147,11 @@ const PassengersModal = (props) => {
         minimum={0}
       />
 
-      <DoneButton setIsModalOpen={props.setIsModalOpen} marginTop="20%" />
+      <DoneButton
+        setIsModalOpen={props.setIsModalOpen}
+        marginTop="20%"
+        marginHorizontal={"0%"}
+      />
     </ModalContainer>
   );
 };

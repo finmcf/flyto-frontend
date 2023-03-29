@@ -20,10 +20,10 @@ import FlatListItem from "./FlatListItem";
 import DoneButton from "./DoneButton";
 
 const flightClasses = [
-  { id: "ECONOMY", name: "Economy" },
-  { id: "PREMIUM_ECONOMY", name: "Premium Economy" },
-  { id: "BUSINESS", name: "Business Class" },
-  { id: "FIRST", name: "First Class" },
+  { id: "ECONOMY", name: "Class1" },
+  { id: "PREMIUM_ECONOMY", name: "Class2" },
+  { id: "BUSINESS", name: "Class3" },
+  { id: "FIRST", name: "Class4" },
 ];
 
 const { width } = Dimensions.get("window");
@@ -33,9 +33,16 @@ const ClassModal = (props) => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      style={{ borderColor: "red", borderTopWidth: 1, marginTop: "30%" }}
+      style={{
+        borderWidth: width * 0.002,
+        borderColor: "#afafaf",
+        width: "100%",
+        paddingVertical: "7%",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
-      <Text style={{ fontSize: width * 0.07 }}>{item.name}</Text>
+      <Text style={{ fontSize: width * 0.1 }}>{item.name}</Text>
     </TouchableOpacity>
   );
 
@@ -43,6 +50,7 @@ const ClassModal = (props) => {
     <ModalContainer
       isModalOpen={props.isModalOpen}
       setIsModalOpen={props.setIsModalOpen}
+      paddingHorizontal={"0%"}
     >
       <CloseButton setIsModalOpen={props.setIsModalOpen} />
 
@@ -51,12 +59,15 @@ const ClassModal = (props) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         style={{
-          marginVertical: 20,
-          borderBottomColor: "red",
-          borderBottomWidth: 1,
+          marginTop: "30%",
+          width: "100%",
         }}
       />
-      <DoneButton setIsModalOpen={props.setIsModalOpen} marginTop="40%" />
+      <DoneButton
+        setIsModalOpen={props.setIsModalOpen}
+        marginTop={"20%"}
+        marginHorizontal={"50%"}
+      />
     </ModalContainer>
   );
 };
